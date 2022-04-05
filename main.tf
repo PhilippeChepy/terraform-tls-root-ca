@@ -9,7 +9,14 @@ resource "tls_self_signed_cert" "root_ca" {
   key_algorithm   = var.key_algorithm
 
   subject {
-    common_name = var.common_name
+    common_name         = var.subject.common_name != "" ? var.subject.common_name : var.common_name
+    organizational_unit = try(var.subject.organizational_unit)
+    organization        = try(var.subject.organization)
+    street_address      = try(var.subject.street_address)
+    postal_code         = try(var.subject.postal_code)
+    locality            = try(var.subject.locality)
+    province            = try(var.subject.province)
+    country             = try(var.subject.country)
   }
 
   is_ca_certificate     = true
